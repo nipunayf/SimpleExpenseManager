@@ -30,6 +30,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.R;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
@@ -44,6 +47,7 @@ import static lk.ac.mrt.cse.dbs.simpleexpensemanager.Constants.EXPENSE_MANAGER;
 public class ManageExpensesFragment extends Fragment implements View.OnClickListener {
     private Button submitButton;
     private EditText amount;
+    private TextView balance;
     private Spinner accountSelector;
     private RadioGroup expenseTypeGroup;
     private DatePicker datePicker;
@@ -67,6 +71,7 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
         submitButton.setOnClickListener(this);
 
         amount = (EditText) rootView.findViewById(R.id.amount);
+
         accountSelector = (Spinner) rootView.findViewById(R.id.account_selector);
         currentExpenseManager = (ExpenseManager) getArguments().get(EXPENSE_MANAGER);
         ArrayAdapter<String> adapter =
@@ -81,6 +86,23 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
         RadioButton expenseType = (RadioButton) rootView.findViewById(R.id.expense);
         RadioButton incomeType = (RadioButton) rootView.findViewById(R.id.income);
         datePicker = (DatePicker) rootView.findViewById(R.id.date_selector);
+
+        try {
+            String selectedAccount = (String) accountSelector.getSelectedItem();
+            balance = (TextView) rootView.findViewById(R.id.account_balance_value);
+            balance.setText(String.valueOf(currentExpenseManager.getAccountsDAO().getAccount(selectedAccount).getBalance()));
+        } catch (InvalidAccountException e) {
+            new AlertDialog.Builder(this.getActivity())
+                    .setTitle("Error")
+                    .setMessage(e.getMessage())
+                    .setNeutralButton(this.getString(R.string.msg_ok),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            }).setIcon(android.R.drawable.ic_dialog_alert).show();
+        }
         return rootView;
     }
 
@@ -120,6 +142,21 @@ public class ManageExpensesFragment extends Fragment implements View.OnClickList
                     }
                 }
                 amount.getText().clear();
+                try {
+                    selectedAccount = (String) accountSelector.getSelectedItem();
+                    balance.setText(String.valueOf(currentExpenseManager.getAccountsDAO().getAccount(selectedAccount).getBalance()));
+                } catch (InvalidAccountException e) {
+                    new AlertDialog.Builder(this.getActivity())
+                            .setTitle("Error")
+                            .setMessage(e.getMessage())
+                            .setNeutralButton(this.getString(R.string.msg_ok),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                }
                 break;
         }
     }
