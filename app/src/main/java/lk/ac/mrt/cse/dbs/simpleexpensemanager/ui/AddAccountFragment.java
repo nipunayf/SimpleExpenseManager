@@ -30,6 +30,7 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.R;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.exception.ExpenseManagerException;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.exception.DatabaseConnectionException;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.exception.InvalidAccountException;
 
 import static lk.ac.mrt.cse.dbs.simpleexpensemanager.Constants.EXPENSE_MANAGER;
 /**
@@ -102,7 +103,7 @@ public class AddAccountFragment extends Fragment implements View.OnClickListener
                     try {
                         currentExpenseManager.addAccount(accountNumStr, bankNameStr, accountHolderStr,
                                 Double.parseDouble(initialBalanceStr));
-                    } catch (DatabaseConnectionException | ExpenseManagerException e) {
+                    } catch (DatabaseConnectionException | InvalidAccountException e) {
                         new AlertDialog.Builder(this.getActivity())
                                 .setTitle("Failed to Add an Account")
                                 .setMessage(e.getMessage())

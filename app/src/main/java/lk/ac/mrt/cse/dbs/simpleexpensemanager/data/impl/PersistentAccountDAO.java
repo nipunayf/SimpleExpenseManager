@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.exception.ExpenseManagerException;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.AccountDAO;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.DatabaseHandler;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.exception.InvalidAccountException;
@@ -39,7 +40,10 @@ public class PersistentAccountDAO implements AccountDAO {
     }
 
     @Override
-    public void addAccount(Account account) throws DatabaseConnectionException {
+    public void addAccount(Account account) throws InvalidAccountException, DatabaseConnectionException {
+        if (this.accounts.containsKey(account.getAccountNo())) {
+            throw new InvalidAccountException("Account already exists for the given account number");
+        }
         dbh.addAccount(account);
         accounts.put(account.getAccountNo(), account);
     }

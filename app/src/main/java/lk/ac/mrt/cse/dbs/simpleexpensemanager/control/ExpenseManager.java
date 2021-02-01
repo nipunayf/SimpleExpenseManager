@@ -89,11 +89,7 @@ public abstract class ExpenseManager implements Serializable {
      * @param accountHolderName
      * @param initialBalance
      */
-    public void addAccount(String accountNo, String bankName, String accountHolderName, double initialBalance) throws DatabaseConnectionException, ExpenseManagerException {
-
-        if (accountsHolder.getAccountNumbersList().contains(accountNo)) {
-            throw new ExpenseManagerException("Account already exists for the given account number");
-        }
+    public void addAccount(String accountNo, String bankName, String accountHolderName, double initialBalance) throws DatabaseConnectionException, InvalidAccountException {
         Account account = new Account(accountNo, bankName, accountHolderName, initialBalance);
         accountsHolder.addAccount(account);
     }
