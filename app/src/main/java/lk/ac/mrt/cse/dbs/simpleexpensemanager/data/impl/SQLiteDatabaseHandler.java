@@ -55,7 +55,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper implements DatabaseH
     private static SQLiteDatabaseHandler instance = null;
 
     private SQLiteDatabaseHandler(Context context) {
-        super(context, "180176R", null, 2);
+        super(context, DB_NAME, null, 2);
         sqlDB = this.getWritableDatabase();
     }
 
