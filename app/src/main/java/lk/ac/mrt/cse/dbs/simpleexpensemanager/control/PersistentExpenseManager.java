@@ -17,14 +17,14 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Account;
 public class PersistentExpenseManager extends ExpenseManager {
     private Context context;
 
-    public PersistentExpenseManager(Context context) throws ExpenseManagerException, DatabaseConnectionException, ParseException {
+    public PersistentExpenseManager(Context context) throws ParseException {
         this.context = context;
         setup();
     }
 
 
     @Override
-    public void setup() throws ExpenseManagerException, DatabaseConnectionException, ParseException {
+    public void setup() throws  ParseException {
         TransactionDAO transactionDAO = new PersistentTransactionDAO(context);
         setTransactionsDAO(transactionDAO);
 
